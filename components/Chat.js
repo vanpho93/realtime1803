@@ -5,12 +5,14 @@ import { socket } from './socket';
 export class Chat extends Component {
     constructor(props) {
         super(props);
-        this.state = { txtMessage: '' };
+        this.state = { txtMessage: '', messages: [] };
         this.sendMessage = this.sendMessage.bind(this);
     }
 
     componentDidMount() {
-        socket.on('SERVER_SEND_MESSAGE', message => alert(message));
+        socket.on('SERVER_SEND_MESSAGE', message => {
+            this.setState({ messages: [...this.state.messages, message] });
+        });
     }
 
     sendMessage() {
@@ -23,6 +25,11 @@ export class Chat extends Component {
             <View style={styles.chatContainer}>
                 <View style={styles.messagesContainer}>
                     <Text>Messages</Text>
+                    {
+                        this.state.messages.map((message, index) => {
+                            return <Text key={index}>{message}</Text>;
+                        })
+                    }
                 </View>
                 <View style={styles.controlContainer}>
                     <TextInput
