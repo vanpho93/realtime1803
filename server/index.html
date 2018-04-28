@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><title>Document</title>
+    <title>Socket.io Client</title>
+</head>
+<body>
+    <div class="container" style="padding: 10px">
+        <input placeholder="Enter your message" class="form-control" id="txtMessage" style="width: 200px;">
+        <br>
+        <button class="btn btn-success" id="btnSend">Send Message</button>
+        <div id="divMessage"></div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+<script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+<script>
+    const socket = io('https://socket1803.herokuapp.com');
+    
+    socket.on('SERVER_SEND_MESSAGE', message => {
+       $('#divMessage').append(`<p class="text-info">${message}</p>`);
+    });
+    
+    $('#btnSend').click(() => {
+        const message = $('#txtMessage').val();
+        socket.emit('CLIENT_SEND_MESSAGE', message);
+        $('#txtMessage').val('');
+    });
+</script>
+</html>
