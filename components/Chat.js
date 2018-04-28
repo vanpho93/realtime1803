@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, TextInput, ActivityIndicator, Alert, AsyncStorage } from 'react-native';
+import { socket } from './socket';
 
 export class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = { txtMessage: '' };
+        this.sendMessage = this.sendMessage.bind(this);
+    }
+
+    componentDidMount() {
+        socket.on('SERVER_SEND_MESSAGE', message => alert(message));
+    }
+
+    sendMessage() {
+        socket.emit('CLIENT_SEND_MESSAGE', this.state.txtMessage);
+        this.setState({ txtMessage: '' });
     }
     
     render() {
@@ -15,13 +26,14 @@ export class Chat extends Component {
                 </View>
                 <View style={styles.controlContainer}>
                     <TextInput
-                        placeholder="Email"
+                        placeholder="Enter your message"
                         style={styles.inputText}
+                        value={this.state.txtMessage}
                         autoCapitalize="none"
-                        onChangeText={text => this.setState({ txtEmail: text })}
+                        onChangeText={text => this.setState({ txtMessage: text })}
                         underlineColorAndroid="transparent"    
                     />
-                    <TouchableOpacity style={styles.buttonContainer} onPress={this.signIn}>
+                    <TouchableOpacity style={styles.buttonContainer} onPress={this.sendMessage}>
                         <Text style={styles.buttonText}>Send</Text>
                     </TouchableOpacity>
                 </View>
