@@ -32,8 +32,20 @@ export default class App extends Component {
   onIds(device) {
     console.log('Device info: ', device);
   }
-  
+
   render() {
     return <Chat />;
   }
 }
+
+/*
+
+khoaphamtraining@gmail.com
+
+Do an cuoi khoa React Native 1803
+
+Ten
+
+Link github Code react
+
+*/
